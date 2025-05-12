@@ -44,7 +44,7 @@
 }
 
 :root {
-   /* Theme 1: Vibrant Green & Yellow */
+  /* Theme 1: Vibrant Green & Yellow */
   --primary: 254, 239, 110; /* FEEF6E - Bright Yellow */
   --secondary: 8, 115, 59; /* 08733B - Deep Green */
 
@@ -68,91 +68,47 @@
   --action: 255, 165, 0; /* Orange */
   --drink: 220, 20, 60; /* Crimson */
 
-  /* shadcn/ui required variables */
+  /* UI Colors */
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
   --ring: 222.2 84% 4.9%;
   --radius: 0.5rem;
 
+  /* Text Colors */
   --primary-foreground: 0, 0, 0;
   --secondary-foreground: 255, 255, 255;
   --muted-foreground: 115, 115, 115;
   --accent-foreground: 0, 0, 0;
+
+  /* Component Colors */
   --destructive: 0, 84.2%, 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --accent: 210 40% 96.1%;
-
-
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --card: 255, 255, 255;
+  --card-foreground: 0, 0, 0;
+  --popover: 255, 255, 255;
+  --popover-foreground: 0, 0, 0;
+  --accent: 164, 157, 198; /* Using accent-1 as base accent */
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: 0, 0, 0;
+  --foreground: 255, 255, 255;
+  --card: 20, 20, 20;
+  --card-foreground: 255, 255, 255;
+  --popover: 20, 20, 20;
+  --popover-foreground: 255, 255, 255;
+  --primary: 254, 239, 110;
+  --primary-foreground: 0, 0, 0;
+  --secondary: 8, 115, 59;
+  --secondary-foreground: 255, 255, 255;
+  --muted: 40, 40, 40;
+  --muted-foreground: 180, 180, 180;
+  --accent: 164, 157, 198;
+  --accent-foreground: 255, 255, 255;
+  --destructive: 220, 20, 60;
+  --border: 60, 60, 60;
+  --input: 60, 60, 60;
+  --ring: 164, 157, 198;
 }
 
 @layer base {
@@ -162,10 +118,8 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-
   }
 }
-
 
 @layer components {
   .card-container {
@@ -208,9 +162,82 @@
   }
 
   .card-front {
-    background: white;
+    background: rgb(var(--card));
     border: 3px solid rgb(var(--primary));
-    color: rgb(var(--foreground));
+    color: rgb(var(--card-foreground));
+  }
+
+  /* Card Types */
+  .card-skinship {
+    background: linear-gradient(135deg, rgb(var(--skinship)), rgb(var(--accent-1)));
+    color: white;
+  }
+
+  .card-question {
+    background: linear-gradient(135deg, rgb(var(--question)), rgb(var(--accent-4)));
+    color: white;
+  }
+
+  .card-action {
+    background: linear-gradient(135deg, rgb(var(--action)), rgb(var(--accent-3)));
+    color: rgb(var(--primary-foreground));
+  }
+
+  .card-drink {
+    background: linear-gradient(135deg, rgb(var(--drink)), rgb(var(--accent-2)));
+    color: white;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+
+  .btn-secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.95);
+  }
+
+  .input-primary {
+    background-color: rgb(var(--muted));
+    border: 2px solid rgb(var(--primary));
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .input-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(var(--primary));
+    border-color: transparent;
   }
 
   /* Pulsing animation for card when not flipped */
@@ -229,45 +256,9 @@
       box-shadow: 0 0 0 0 rgba(var(--primary), 0);
     }
   }
-
-  .btn-primary {
-    @apply bg-primary text-black font-bold py-3 px-6 rounded-full 
-    shadow-lg hover:shadow-xl transition-all duration-300 
-    transform hover:scale-105 active:scale-95;
-  }
-
-  .btn-secondary {
-    @apply bg-secondary text-white font-bold py-3 px-6 rounded-full 
-    shadow-lg hover:shadow-xl transition-all duration-300 
-    transform hover:scale-105 active:scale-95;
-  }
-
-  .input-primary {
-    @apply bg-muted border-2 border-primary rounded-lg px-4 py-3 
-    focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
-  }
-
-  .card-skinship {
-    background: linear-gradient(to bottom right, rgba(var(--skinship), 0.2), rgba(var(--skinship), 0.05));
-    border-left: 4px solid rgb(var(--skinship));
-  }
-
-  .card-question {
-    background: linear-gradient(to bottom right, rgba(var(--question), 0.2), rgba(var(--question), 0.05));
-    border-left: 4px solid rgb(var(--question));
-  }
-
-  .card-action {
-    background: linear-gradient(to bottom right, rgba(var(--action), 0.2), rgba(var(--action), 0.05));
-    border-left: 4px solid rgb(var(--action));
-  }
-
-  .card-drink {
-    background: linear-gradient(to bottom right, rgba(var(--drink), 0.2), rgba(var(--drink), 0.05));
-    border-left: 4px solid rgb(var(--drink));
-  }
 }
 
+/* Top Loader */
 #nprogress {
   pointer-events: none;
 }

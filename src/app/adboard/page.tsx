@@ -36,7 +36,6 @@ export default function AdminPage() {
   const fetchCards = async () => {
     setIsLoading(true)
     try {
-      // Get cards from IndexedDB
       const type = filterType !== "all" ? filterType : undefined
       const intensity = filterIntensity !== "all" ? filterIntensity : undefined
 
@@ -78,10 +77,8 @@ export default function AdminPage() {
   const handleSubmit = async () => {
     try {
       if (currentCard) {
-        // Update existing card in IndexedDB
         await updateCard(currentCard._id, formData)
       } else {
-        // Create new card in IndexedDB
         await addCard({
           ...formData,
           isDefault: false,
@@ -100,7 +97,6 @@ export default function AdminPage() {
     if (!currentCard) return
 
     try {
-      // Delete card from IndexedDB
       await deleteCard(currentCard._id)
       setIsDeleteDialogOpen(false)
       fetchCards()
@@ -113,13 +109,13 @@ export default function AdminPage() {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "skinship":
-        return <Heart className="h-5 w-5 text-skinship" />
+        return <Heart className="h-5 w-5 text-pink-500" />
       case "question":
-        return <HelpCircle className="h-5 w-5 text-question" />
+        return <HelpCircle className="h-5 w-5 text-blue-500" />
       case "action":
-        return <Zap className="h-5 w-5 text-action" />
+        return <Zap className="h-5 w-5 text-orange-500" />
       case "drink":
-        return <Beer className="h-5 w-5 text-drink" />
+        return <Beer className="h-5 w-5 text-red-500" />
       default:
         return null
     }
@@ -128,13 +124,13 @@ export default function AdminPage() {
   const getTypeClass = (type: string) => {
     switch (type) {
       case "skinship":
-        return "border-skinship"
+        return "border-pink-500"
       case "question":
-        return "border-question"
+        return "border-blue-500"
       case "action":
-        return "border-action"
+        return "border-orange-500"
       case "drink":
-        return "border-drink"
+        return "border-red-500"
       default:
         return ""
     }
@@ -156,22 +152,22 @@ export default function AdminPage() {
   const filteredCards = cards.filter((card) => card.content.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (
-    <main className="min-h-screen p-4 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-4 md:mb-6">
-        <Button variant="ghost" onClick={() => router.push("/")} className="text-gray-600 p-2 md:p-4">
+    <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white p-4 max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <Button variant="ghost" onClick={() => router.push("/")} className="text-gray-700 hover:text-gray-900 p-2 md:p-4">
           <Home className="h-5 w-5" />
           <span className="hidden md:inline ml-2">Trang chủ</span>
         </Button>
 
-        <h1 className="text-xl md:text-2xl font-bold text-foreground">Quản Lý Thẻ</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800">Quản Lý Thẻ</h1>
 
-        <Button onClick={() => handleOpenDialog()} className="btn-primary p-2 md:p-4">
+        <Button onClick={() => handleOpenDialog()} className="bg-amber-300 hover:bg-amber-400 text-gray-800 p-2 md:p-4">
           <Plus className="h-5 w-5" />
           <span className="hidden md:inline ml-2">Thêm Thẻ</span>
         </Button>
       </div>
 
-      <div className="mb-4 md:mb-6 space-y-3 md:space-y-4">
+      <div className="mb-6 space-y-4">
         <div className="flex flex-col md:flex-row gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -179,7 +175,7 @@ export default function AdminPage() {
               placeholder="Tìm kiếm thẻ..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300"
             />
           </div>
 
@@ -191,7 +187,7 @@ export default function AdminPage() {
               setSearchQuery("")
             }}
             disabled={filterType === "all" && filterIntensity === "all" && !searchQuery}
-            className="md:w-auto w-full"
+            className="md:w-auto w-full border-gray-200 hover:border-amber-300 hover:text-amber-600"
           >
             Xóa bộ lọc
           </Button>
@@ -204,7 +200,7 @@ export default function AdminPage() {
           </div>
 
           <Select value={filterType} onValueChange={(value) => setFilterType(value as CardType)}>
-            <SelectTrigger className="h-8 w-auto">
+            <SelectTrigger className="h-8 w-auto bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300">
               <SelectValue placeholder="Loại thẻ" />
             </SelectTrigger>
             <SelectContent>
@@ -217,7 +213,7 @@ export default function AdminPage() {
           </Select>
 
           <Select value={filterIntensity} onValueChange={(value) => setFilterIntensity(value as IntensityLevel)}>
-            <SelectTrigger className="h-8 w-auto">
+            <SelectTrigger className="h-8 w-auto bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300">
               <SelectValue placeholder="Mức độ" />
             </SelectTrigger>
             <SelectContent>
@@ -232,10 +228,10 @@ export default function AdminPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-300"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <AnimatePresence>
             {filteredCards.map((card) => (
               <motion.div
@@ -244,12 +240,12 @@ export default function AdminPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.3 }}
-                className={`bg-white rounded-lg shadow-md p-3 md:p-4 border-l-4 ${getTypeClass(card.type)}`}
+                className={`bg-white rounded-lg shadow-md p-4 border-l-4 ${getTypeClass(card.type)} hover:shadow-lg transition-shadow`}
               >
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex items-center gap-2">
                     {getTypeIcon(card.type)}
-                    <span className="font-medium text-foreground">
+                    <span className="font-medium text-gray-800">
                       {card.type === "skinship" && "Skinship"}
                       {card.type === "question" && "Câu Hỏi"}
                       {card.type === "action" && "Hành Động"}
@@ -257,15 +253,21 @@ export default function AdminPage() {
                     </span>
                   </div>
 
-                  <Badge variant="outline" className="text-foreground">
+                  <Badge variant="outline" className="text-gray-800 border-gray-200">
                     {getIntensityLabel(card.intensity)}
                   </Badge>
                 </div>
 
-                <p className="text-gray-800 mb-3 md:mb-4 text-foreground">{card.content}</p>
+                <p className="text-gray-800 mb-4">{card.content}</p>
 
                 <div className="flex justify-end gap-2">
-                  <Button variant="ghost" size="sm" onClick={() => handleOpenDialog(card)} disabled={card.isDefault}>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => handleOpenDialog(card)} 
+                    disabled={card.isDefault}
+                    className="hover:bg-amber-50 hover:text-amber-600"
+                  >
                     <Pencil className="h-4 w-4 mr-1" />
                     <span className="hidden md:inline">Sửa</span>
                   </Button>
@@ -273,7 +275,7 @@ export default function AdminPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
                     onClick={() => handleOpenDeleteDialog(card)}
                     disabled={card.isDefault}
                   >
@@ -284,7 +286,7 @@ export default function AdminPage() {
 
                 {card.isDefault && (
                   <div className="mt-2">
-                    <Badge variant="secondary">Mặc định</Badge>
+                    <Badge variant="secondary" className="bg-gray-100 text-gray-600">Mặc định</Badge>
                   </div>
                 )}
               </motion.div>
@@ -301,30 +303,31 @@ export default function AdminPage() {
 
       {/* Add/Edit Card Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="bg-white">
           <DialogHeader>
-            <DialogTitle className="text-foreground">{currentCard ? "Chỉnh Sửa Thẻ" : "Thêm Thẻ Mới"}</DialogTitle>
+            <DialogTitle className="text-gray-800">{currentCard ? "Chỉnh Sửa Thẻ" : "Thêm Thẻ Mới"}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Nội dung</label>
+              <label className="text-sm font-medium text-gray-700">Nội dung</label>
               <Textarea
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 placeholder="Nhập nội dung thẻ..."
                 rows={4}
+                className="bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Loại thẻ</label>
+                <label className="text-sm font-medium text-gray-700">Loại thẻ</label>
                 <Select
                   value={formData.type}
                   onValueChange={(value) => setFormData({ ...formData, type: value as CardType })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -337,12 +340,12 @@ export default function AdminPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Mức độ</label>
+                <label className="text-sm font-medium text-gray-700">Mức độ</label>
                 <Select
                   value={formData.intensity}
                   onValueChange={(value) => setFormData({ ...formData, intensity: value as IntensityLevel })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -356,10 +359,14 @@ export default function AdminPage() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-gray-200 hover:border-amber-300 hover:text-amber-600">
               Hủy
             </Button>
-            <Button onClick={handleSubmit} disabled={!formData.content.trim()} className="btn-primary">
+            <Button 
+              onClick={handleSubmit} 
+              disabled={!formData.content.trim()} 
+              className="bg-amber-300 hover:bg-amber-400 text-gray-800 font-bold"
+            >
               {currentCard ? "Cập Nhật" : "Thêm Thẻ"}
             </Button>
           </DialogFooter>
@@ -368,21 +375,21 @@ export default function AdminPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
+        <DialogContent className="bg-white">
           <DialogHeader>
-            <DialogTitle className="text-foreground">Xác Nhận Xóa</DialogTitle>
+            <DialogTitle className="text-gray-800">Xác Nhận Xóa</DialogTitle>
           </DialogHeader>
 
           <div className="py-4">
-            <p className="text-foreground">Bạn có chắc chắn muốn xóa thẻ này?</p>
-            <p className="font-medium mt-2 text-foreground">{currentCard?.content}</p>
+            <p className="text-gray-700">Bạn có chắc chắn muốn xóa thẻ này?</p>
+            <p className="font-medium mt-2 text-gray-800">{currentCard?.content}</p>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)} className="border-gray-200 hover:border-amber-300 hover:text-amber-600">
               Hủy
             </Button>
-            <Button variant="destructive" onClick={handleDelete}>
+            <Button variant="destructive" onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
               Xóa
             </Button>
           </DialogFooter>

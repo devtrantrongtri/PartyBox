@@ -11,7 +11,7 @@ import { initializeDatabase, createGame } from "@/lib/db-service"
 
 export default function Home() {
   const router = useRouter()
-  const { players, addPlayer, removePlayer, updatePlayer, resetGame, setGameId, isDbInitialized, setIsDbInitialized } =
+  const { players, addPlayer, removePlayer, resetGame, setGameId, isDbInitialized, setIsDbInitialized } =
     useGameStore()
   const [isLoading, setIsLoading] = useState(false)
   const [isInitializing, setIsInitializing] = useState(true)

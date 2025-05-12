@@ -25,7 +25,7 @@ interface GameDB extends DBSchema {
 
 let dbPromise: Promise<IDBPDatabase<GameDB>> | null = null
 let dbInstance: IDBPDatabase<GameDB> | null = null
-let usedCardIds: Set<string> = new Set()
+const usedCardIds = new Set<string>()
 
 // Initialize the database
 const initDB = async (): Promise<IDBPDatabase<GameDB>> => {
@@ -133,7 +133,13 @@ export const getRandomCard = async (type?: CardType, intensity?: IntensityLevel)
     // Nếu tất cả thẻ đã được sử dụng, reset lại danh sách
     if (availableCards.length === 0) {
       usedCardIds.clear()
-      return getRandomCard(type, intensity)
+      // Thay vì gọi đệ quy, lấy lại danh sách thẻ mới
+      const newCards = await getCards(type, intensity)
+      if (newCards.length === 0) return null
+      const randomIndex = Math.floor(Math.random() * newCards.length)
+      const selectedCard = newCards[randomIndex]
+      usedCardIds.add(selectedCard._id)
+      return selectedCard
     }
 
     // Chọn ngẫu nhiên từ các thẻ còn lại
@@ -313,15 +319,20 @@ export const initializeDatabase = async (): Promise<void> => {
       // Seed default cards to localStorage
       const existingCards = fallbackStorage.getItem("drinking-game-cards")
       if (!existingCards) {
-        const cards = defaultCards.map((card) => ({
-          ...card,
-          _id: crypto.randomUUID(),
-        }))
-        fallbackStorage.setItem("drinking-game-cards", JSON.stringify(cards))
+        try {
+          const cards = defaultCards.map((card) => ({
+            ...card,
+            _id: crypto.randomUUID(),
+          }))
+          fallbackStorage.setItem("drinking-game-cards", JSON.stringify(cards))
+        } catch (storageError) {
+          console.error("Error seeding cards to localStorage:", storageError)
+        }
       }
     }
   } catch (error) {
     console.error("Error initializing database:", error)
+    // Không throw error để tránh crash app
   }
 }
 

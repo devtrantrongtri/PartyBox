@@ -16,13 +16,14 @@
 
 ## 🖼️ Screenshot
 
-![screenshot](public/screenshot.png) <!-- Thêm hình vào thư mục public nếu có -->
+![screenshot](public/homepage.png) 
+![screenshot](public/playPage.png) 
 
 ---
 
 ## 🚀 Demo
 
-Sẽ cập nhật sau khi deploy.
+🎮 [https://party-box.vercel.app/](https://party-box.vercel.app/)
 
 ---
 
@@ -62,3 +63,63 @@ npm install
 
 # Chạy project
 npm run dev
+
+```
+
+## 📁 Cấu trúc dự án
+
+```
+src/
+├── app/                 # Next.js app directory
+│   ├── page.tsx        # Trang chủ
+│   ├── play/          # Trang chơi game
+│   └── adboard/       # Trang quản lý thẻ bài
+├── components/         # React components
+├── lib/               # Utilities và services
+│   ├── db-service.ts  # IndexedDB service
+│   ├── store.ts       # Zustand store
+│   └── seed-data.ts   # Dữ liệu mẫu
+└── styles/            # Global styles
+```
+
+## 🎨 Phát triển
+
+### 📄 Cấu trúc dữ liệu
+
+#### 🃏 Card
+```typescript
+type Card = {
+  _id: string
+  content: string
+  type: CardType
+  intensity: IntensityLevel
+  isDefault: boolean
+}
+```
+
+#### 🧍 Player
+```typescript
+type Player = {
+  name: string
+  avatar?: string
+}
+```
+
+### 📜 Quy ước code
+
+- Sử dụng TypeScript cho type safety
+- Tuân thủ ESLint rules
+- Sử dụng functional components với hooks
+- Tách biệt logic và UI
+
+## 🤝 Đóng góp
+
+1. Fork repository
+2. Tạo branch mới (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Tạo Pull Request
+
+## 📄 License
+
+MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.

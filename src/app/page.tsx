@@ -76,7 +76,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-amber-300 to-emerald-700 bg-clip-text text-transparent">
           Drinking Game Box 🎲
         </h1>
-        <p className="text-xl text-gray-600">Biến mỗi buổi tụ tập thành kỷ niệm đáng nhớ!</p>
+        {/* <p className="text-xl text-gray-600">Biến mỗi buổi tụ tập thành kỷ niệm đáng nhớ!</p> */}
       </motion.div>
 
       {showGuide && (
@@ -84,7 +84,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full bg-white rounded-xl shadow-lg p-6 mb-8"
+          className="w-full bg-white rounded-xl shadow-lg p-2 mb-3"
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-800 flex items-center">

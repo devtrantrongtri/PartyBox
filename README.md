@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍻 PartyBox
 
-## Getting Started
+> Web app trò chơi nhóm, thiết kế dành riêng cho các buổi tiệc, uống rượu, và tụ họp bạn bè.
 
-First, run the development server:
+---
+
+## 🎉 Mô tả
+
+**PartyBox** là một ứng dụng chơi trực tiếp trên trình duyệt giúp nhóm bạn:
+- Nhập tên từng người chơi
+- Rút thẻ ngẫu nhiên có nội dung hài hước, bạo, skinship nhẹ, thử thách, câu hỏi...
+- Lưu lịch sử người rút
+- Giao diện sống động, dễ sử dụng trên điện thoại hoặc máy tính
+
+---
+
+## 🖼️ Screenshot
+
+![screenshot](public/screenshot.png) <!-- Thêm hình vào thư mục public nếu có -->
+
+---
+
+## 🚀 Demo
+
+Sẽ cập nhật sau khi deploy.
+
+---
+
+## 🧩 Tính năng
+
+- 🎲 Rút thẻ ngẫu nhiên
+- 📜 Ghi lại lịch sử lượt chơi
+- ✍️ Giao diện tạo/cập nhật câu hỏi cho admin
+- 🔊 Âm thanh & hiệu ứng animation
+- 👥 Nhập tên người chơi
+- 📱 Responsive cho điện thoại và desktop
+
+---
+
+## ⚙️ Công nghệ sử dụng
+
+- [Next.js](https://nextjs.org/) 14
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Zustand](https://github.com/pmndrs/zustand) — Quản lý state
+- [Framer Motion](https://www.framer.com/motion/) — Animation
+- [Canvas Confetti](https://www.npmjs.com/package/canvas-confetti) — Hiệu ứng ăn mừng
+- [Lucide React](https://lucide.dev/) — Icon đẹp
+- [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) (qua `idb`) — Lưu tạm cục bộ
+
+---
+
+## 🛠️ Cài đặt
 
 ```bash
+# Clone dự án
+git clone https://github.com/devtrantrongtri/PartyBox.git
+cd PartyBox
+
+# Cài dependencies
+npm install
+
+# Chạy project
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

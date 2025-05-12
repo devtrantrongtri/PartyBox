@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Rút Thẻ Định Mệnh - Trò Chơi Uống Rượu",
   description: "Trò chơi uống rượu vui nhộn cùng bạn bè!",
+  icons: {
+    icon: "/placeholder-logo.png", 
+  },
 }
 
 export default function RootLayout({

@@ -174,7 +174,13 @@ export default function Home() {
               players={players}
               onAddPlayer={addPlayer}
               onRemovePlayer={removePlayer}
-              onUpdatePlayer={updatePlayer}
+              onClearPlayers={() => {
+                console.log("Clearing all players...");
+                // Loop through players and remove each one
+                for (let i = players.length - 1; i >= 0; i--) {
+                  removePlayer(i);
+                }
+              }}
               minPlayers={2}
             />
 

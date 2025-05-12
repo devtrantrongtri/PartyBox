@@ -12,6 +12,7 @@ type PlayerListProps = {
   players: Player[]
   onAddPlayer: (player: Player) => void
   onRemovePlayer: (index: number) => void
+  onClearPlayers: () => void
   minPlayers?: number
 }
 
@@ -19,6 +20,7 @@ export default function PlayerList({
   players,
   onAddPlayer,
   onRemovePlayer,
+  onClearPlayers,
   minPlayers = 2,
 }: PlayerListProps) {
   const [newPlayerName, setNewPlayerName] = useState("")
@@ -50,6 +52,11 @@ export default function PlayerList({
         <Button onClick={handleAddPlayer} disabled={!newPlayerName.trim()} className="btn-primary">
           <UserPlus className="h-5 w-5" />
         </Button>
+        {players.length > 0 && (
+          <Button onClick={onClearPlayers} variant="outline" className="ml-2 text-red-600 border-red-300 hover:bg-red-50">
+            Xóa hết
+          </Button>
+        )}
       </div>
 
       <AnimatePresence>

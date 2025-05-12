@@ -44,6 +44,49 @@
 }
 
 :root {
+   /* Theme 1: Vibrant Green & Yellow */
+  --primary: 254, 239, 110; /* FEEF6E - Bright Yellow */
+  --secondary: 8, 115, 59; /* 08733B - Deep Green */
+
+  /* Theme 2: Purple & Beige */
+  --accent-1: 164, 157, 198; /* A49DC6 - Soft Purple */
+  --accent-2: 190, 179, 173; /* BEB3AD - Warm Beige */
+
+  /* Theme 3: Cream & Blue */
+  --accent-3: 251, 232, 189; /* FBE8BD - Soft Cream */
+  --accent-4: 135, 172, 217; /* 87ACD9 - Sky Blue */
+
+  /* Base Colors */
+  --background: 255, 255, 255; /* White */
+  --foreground: 0, 0, 0; /* Black */
+  --muted: 245, 245, 245; /* Light Gray */
+  --pink: 255, 192, 203; /* Pink */
+
+  /* Card Types */
+  --skinship: 255, 105, 180; /* Hot Pink */
+  --question: 65, 105, 225; /* Royal Blue */
+  --action: 255, 165, 0; /* Orange */
+  --drink: 220, 20, 60; /* Crimson */
+
+  /* shadcn/ui required variables */
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+
+  --primary-foreground: 0, 0, 0;
+  --secondary-foreground: 255, 255, 255;
+  --muted-foreground: 115, 115, 115;
+  --accent-foreground: 0, 0, 0;
+  --destructive: 0, 84.2%, 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --accent: 210 40% 96.1%;
+
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -118,5 +161,109 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+
+  }
+}
+
+
+@layer components {
+  .card-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 3 / 4;
+  }
+
+  .card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  }
+
+  .card.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--secondary)));
+    transform: rotateY(180deg);
+    color: rgb(var(--primary-foreground));
+  }
+
+  .card-front {
+    background: white;
+    border: 3px solid rgb(var(--primary));
+    color: rgb(var(--foreground));
+  }
+
+  /* Pulsing animation for card when not flipped */
+  .card:not(.flipped):not(.opacity-70) .card-front {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(var(--primary), 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(var(--primary), 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(var(--primary), 0);
+    }
+  }
+
+  .btn-primary {
+    @apply bg-primary text-black font-bold py-3 px-6 rounded-full 
+    shadow-lg hover:shadow-xl transition-all duration-300 
+    transform hover:scale-105 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white font-bold py-3 px-6 rounded-full 
+    shadow-lg hover:shadow-xl transition-all duration-300 
+    transform hover:scale-105 active:scale-95;
+  }
+
+  .input-primary {
+    @apply bg-muted border-2 border-primary rounded-lg px-4 py-3 
+    focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+
+  .card-skinship {
+    background: linear-gradient(to bottom right, rgba(var(--skinship), 0.2), rgba(var(--skinship), 0.05));
+    border-left: 4px solid rgb(var(--skinship));
+  }
+
+  .card-question {
+    background: linear-gradient(to bottom right, rgba(var(--question), 0.2), rgba(var(--question), 0.05));
+    border-left: 4px solid rgb(var(--question));
+  }
+
+  .card-action {
+    background: linear-gradient(to bottom right, rgba(var(--action), 0.2), rgba(var(--action), 0.05));
+    border-left: 4px solid rgb(var(--action));
+  }
+
+  .card-drink {
+    background: linear-gradient(to bottom right, rgba(var(--drink), 0.2), rgba(var(--drink), 0.05));
+    border-left: 4px solid rgb(var(--drink));
   }
 }

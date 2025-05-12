@@ -97,7 +97,7 @@ export default function Home() {
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Bắt Đầu Chơi</h3>
                   <p className="text-gray-600">
-                    Thêm tên người chơi (5-10 người) và nhấn "Bắt Đầu Chơi". Mỗi người sẽ lần lượt rút thẻ và thực hiện
+                    Thêm tên người chơi (5-10 người) và nhấn &quot;Bắt Đầu Chơi&quot;. Mỗi người sẽ lần lượt rút thẻ và thực hiện
                     thử thách!
                   </p>
                 </div>
@@ -108,7 +108,7 @@ export default function Home() {
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Cách Chơi</h3>
                   <p className="text-gray-600">
-                    Đến lượt bạn, nhấn "Rút Thẻ" và thực hiện thử thách trên thẻ. Có 4 loại thẻ: Câu Hỏi, Hành Động, Uống
+                    Đến lượt bạn, nhấn &quot;Rút Thẻ&quot; và thực hiện thử thách trên thẻ. Có 4 loại thẻ: Câu Hỏi, Hành Động, Uống
                     Rượu, và Thân Mật.
                   </p>
                 </div>

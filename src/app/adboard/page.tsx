@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import type { Card, CardType, IntensityLevel } from "@/lib/store"
@@ -29,11 +29,7 @@ export default function AdminPage() {
   const [filterIntensity, setFilterIntensity] = useState<IntensityLevel>("all")
   const [searchQuery, setSearchQuery] = useState("")
 
-  useEffect(() => {
-    fetchCards()
-  }, [filterType, filterIntensity])
-
-  const fetchCards = async () => {
+  const fetchCards = useCallback(async () => {
     setIsLoading(true)
     try {
       const type = filterType !== "all" ? filterType : undefined
@@ -47,7 +43,11 @@ export default function AdminPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [filterType, filterIntensity])
+
+  useEffect(() => {
+    fetchCards()
+  }, [fetchCards])
 
   const handleOpenDialog = (card?: Card) => {
     if (card) {

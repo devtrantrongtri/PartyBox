@@ -15,7 +15,6 @@ export default function PlayPage() {
   const {
     players,
     currentPlayerIndex,
-    gameHistory,
     currentCard,
     isCardFlipped,
     gameId,

@@ -62,27 +62,22 @@ const initDB = async (): Promise<IDBPDatabase<GameDB>> => {
 export const seedDefaultCards = async (): Promise<void> => {
   try {
     const db = await initDB()
+    const tx = db.transaction("cards", "readwrite")
+    const store = tx.objectStore("cards")
 
-    // Check if we already have cards
-    const tx = db.transaction("cards", "readonly")
-    const count = await tx.store.count()
-    await tx.done
+    // Clear existing cards
+    await store.clear()
 
-    // Only seed if we don't have any cards
-    if (count === 0) {
-      const seedTx = db.transaction("cards", "readwrite")
-      const store = seedTx.objectStore("cards")
-
-      for (const card of defaultCards) {
-        await store.add({
-          ...card,
-          _id: crypto.randomUUID(),
-        })
-      }
-
-      await seedTx.done
-      console.log("Default cards seeded successfully")
+    // Add all default cards
+    for (const card of defaultCards) {
+      await store.add({
+        ...card,
+        _id: crypto.randomUUID(),
+      })
     }
+
+    await tx.done
+    console.log("Default cards seeded successfully")
   } catch (error) {
     console.error("Error seeding default cards:", error)
   }

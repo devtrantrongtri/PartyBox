@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Heart, HelpCircle, Zap, Beer, Plus, Pencil, Trash2, Home, Search, Filter } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { getCards, addCard, updateCard, deleteCard } from "@/lib/db-service"
+import { getCards, addCard, updateCard, deleteCard, initializeDatabase } from "@/lib/db-service"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -28,15 +28,51 @@ export default function AdminPage() {
   const [filterType, setFilterType] = useState<CardType>("all")
   const [filterIntensity, setFilterIntensity] = useState<IntensityLevel>("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const cardsPerPage = 10
+
+  // Initialize database and load cards
+  useEffect(() => {
+    const initializeData = async () => {
+      try {
+        setIsLoading(true)
+        // Initialize database and seed default cards
+        await initializeDatabase()
+        // Force reload all cards
+        const allCards = await getCards()
+        console.log("Loaded cards:", allCards.length) // Debug log
+        setCards(allCards)
+      } catch (error) {
+        console.error("Error initializing data:", error)
+        alert("Có lỗi xảy ra khi khởi tạo dữ liệu. Vui lòng thử lại!")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    initializeData()
+  }, [])
 
   const fetchCards = useCallback(async () => {
     setIsLoading(true)
     try {
-      const type = filterType !== "all" ? filterType : undefined
-      const intensity = filterIntensity !== "all" ? filterIntensity : undefined
-
-      const fetchedCards = await getCards(type, intensity)
-      setCards(fetchedCards)
+      // Force reload all cards
+      const fetchedCards = await getCards()
+      console.log("Fetched cards:", fetchedCards.length) // Debug log
+      
+      // Then filter them based on selected filters
+      let filteredCards = fetchedCards
+      
+      if (filterType !== "all") {
+        filteredCards = filteredCards.filter(card => card.type === filterType)
+      }
+      
+      if (filterIntensity !== "all") {
+        filteredCards = filteredCards.filter(card => card.intensity === filterIntensity)
+      }
+      
+      setCards(filteredCards)
+      setCurrentPage(1) // Reset to first page when filters change
     } catch (error) {
       console.error("Error fetching cards:", error)
       alert("Có lỗi xảy ra khi tải danh sách thẻ. Vui lòng thử lại!")
@@ -45,6 +81,7 @@ export default function AdminPage() {
     }
   }, [filterType, filterIntensity])
 
+  // Update cards when filters change
   useEffect(() => {
     fetchCards()
   }, [fetchCards])
@@ -150,6 +187,17 @@ export default function AdminPage() {
   }
 
   const filteredCards = cards.filter((card) => card.content.toLowerCase().includes(searchQuery.toLowerCase()))
+  
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage)
+  const startIndex = (currentPage - 1) * cardsPerPage
+  const endIndex = startIndex + cardsPerPage
+  const currentCards = filteredCards.slice(startIndex, endIndex)
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white p-4 max-w-4xl mx-auto">
@@ -174,7 +222,10 @@ export default function AdminPage() {
             <Input
               placeholder="Tìm kiếm thẻ..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value)
+                setCurrentPage(1) // Reset to first page when search changes
+              }}
               className="pl-10 bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300"
             />
           </div>
@@ -185,6 +236,7 @@ export default function AdminPage() {
               setFilterType("all")
               setFilterIntensity("all")
               setSearchQuery("")
+              setCurrentPage(1)
             }}
             disabled={filterType === "all" && filterIntensity === "all" && !searchQuery}
             className="md:w-auto w-full border-gray-200 hover:border-amber-300 hover:text-amber-600"
@@ -231,74 +283,118 @@ export default function AdminPage() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-300"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <AnimatePresence>
-            {filteredCards.map((card) => (
-              <motion.div
-                key={card._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.3 }}
-                className={`bg-white rounded-lg shadow-md p-4 border-l-4 ${getTypeClass(card.type)} hover:shadow-lg transition-shadow`}
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AnimatePresence>
+              {currentCards.map((card) => (
+                <motion.div
+                  key={card._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.3 }}
+                  className={`bg-white rounded-lg shadow-md p-4 border-l-4 ${getTypeClass(card.type)} hover:shadow-lg transition-shadow`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center gap-2">
+                      {getTypeIcon(card.type)}
+                      <span className="font-medium text-gray-800">
+                        {card.type === "skinship" && "Skinship"}
+                        {card.type === "question" && "Câu Hỏi"}
+                        {card.type === "action" && "Hành Động"}
+                        {card.type === "drink" && "Uống"}
+                      </span>
+                    </div>
+
+                    <Badge variant="outline" className="text-gray-800 border-gray-200">
+                      {getIntensityLabel(card.intensity)}
+                    </Badge>
+                  </div>
+
+                  <p className="text-gray-800 mb-4">{card.content}</p>
+
+                  <div className="flex justify-end gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => handleOpenDialog(card)} 
+                      disabled={card.isDefault}
+                      className="hover:bg-amber-50 hover:text-amber-600"
+                    >
+                      <Pencil className="h-4 w-4 mr-1" />
+                      <span className="hidden md:inline">Sửa</span>
+                    </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => handleOpenDeleteDialog(card)}
+                      disabled={card.isDefault}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      <span className="hidden md:inline">Xóa</span>
+                    </Button>
+                  </div>
+
+                  {card.isDefault && (
+                    <div className="mt-2">
+                      <Badge variant="secondary" className="bg-gray-100 text-gray-600">Mặc định</Badge>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {filteredCards.length === 0 && (
+              <div className="col-span-full text-center py-10 text-gray-500">
+                Không tìm thấy thẻ nào. Hãy thêm thẻ mới hoặc thay đổi bộ lọc.
+              </div>
+            )}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="border-gray-200 hover:border-amber-300 hover:text-amber-600"
               >
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex items-center gap-2">
-                    {getTypeIcon(card.type)}
-                    <span className="font-medium text-gray-800">
-                      {card.type === "skinship" && "Skinship"}
-                      {card.type === "question" && "Câu Hỏi"}
-                      {card.type === "action" && "Hành Động"}
-                      {card.type === "drink" && "Uống"}
-                    </span>
-                  </div>
-
-                  <Badge variant="outline" className="text-gray-800 border-gray-200">
-                    {getIntensityLabel(card.intensity)}
-                  </Badge>
-                </div>
-
-                <p className="text-gray-800 mb-4">{card.content}</p>
-
-                <div className="flex justify-end gap-2">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => handleOpenDialog(card)} 
-                    disabled={card.isDefault}
-                    className="hover:bg-amber-50 hover:text-amber-600"
-                  >
-                    <Pencil className="h-4 w-4 mr-1" />
-                    <span className="hidden md:inline">Sửa</span>
-                  </Button>
-
+                Trước
+              </Button>
+              
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => handleOpenDeleteDialog(card)}
-                    disabled={card.isDefault}
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    onClick={() => handlePageChange(page)}
+                    className={currentPage === page 
+                      ? "bg-amber-300 hover:bg-amber-400 text-gray-800" 
+                      : "border-gray-200 hover:border-amber-300 hover:text-amber-600"
+                    }
                   >
-                    <Trash2 className="h-4 w-4 mr-1" />
-                    <span className="hidden md:inline">Xóa</span>
+                    {page}
                   </Button>
-                </div>
+                ))}
+              </div>
 
-                {card.isDefault && (
-                  <div className="mt-2">
-                    <Badge variant="secondary" className="bg-gray-100 text-gray-600">Mặc định</Badge>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </AnimatePresence>
-
-          {filteredCards.length === 0 && (
-            <div className="col-span-full text-center py-10 text-gray-500">
-              Không tìm thấy thẻ nào. Hãy thêm thẻ mới hoặc thay đổi bộ lọc.
+              <Button
+                variant="outline"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="border-gray-200 hover:border-amber-300 hover:text-amber-600"
+              >
+                Sau
+              </Button>
             </div>
           )}
-        </div>
+
+          <div className="text-center text-sm text-gray-500 mt-4">
+            Hiển thị {startIndex + 1}-{Math.min(endIndex, filteredCards.length)} trên tổng số {filteredCards.length} thẻ
+          </div>
+        </>
       )}
 
       {/* Add/Edit Card Dialog */}

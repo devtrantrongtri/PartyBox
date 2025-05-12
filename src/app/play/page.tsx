@@ -92,6 +92,10 @@ export default function PlayPage() {
         await updateGamePlayerIndex(gameId, nextPlayerIndex)
       }
 
+      // Reset card state for next player
+      setCurrentCard(null)
+      setIsCardFlipped(false)
+      
       playSuccessSound()
       nextPlayer()
     } catch (error) {

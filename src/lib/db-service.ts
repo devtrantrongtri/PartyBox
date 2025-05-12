@@ -285,7 +285,7 @@ const fallbackStorage = {
 export const isIndexedDBAvailable = (): boolean => {
   try {
     return typeof indexedDB !== "undefined"
-  } catch (error) {
+  } catch {
     return false
   }
 }

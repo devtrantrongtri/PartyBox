@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Home, RefreshCw } from "lucide-react"
 import confetti from "canvas-confetti"
 import { getRandomCard, updateGameHistory, updateGamePlayerIndex } from "@/lib/db-service"
+import GameHistoryDisplay from "@/components/game-history"
 
 export default function PlayPage() {
   const router = useRouter()
@@ -17,13 +18,14 @@ export default function PlayPage() {
     currentPlayerIndex,
     currentCard,
     isCardFlipped,
+    gameHistory,
+    gameMode,
     gameId,
+    addToHistory,
     nextPlayer,
     setCurrentCard,
-    addToHistory,
     setIsCardFlipped,
     resetGame,
-    gameMode,
   } = useGameStore()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -177,6 +179,8 @@ export default function PlayPage() {
           </div>
         )}
       </div>
+
+      <GameHistoryDisplay history={gameHistory} />
     </main>
   )
 }

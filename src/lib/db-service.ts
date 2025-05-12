@@ -25,6 +25,7 @@ interface GameDB extends DBSchema {
 
 let dbPromise: Promise<IDBPDatabase<GameDB>> | null = null
 let dbInstance: IDBPDatabase<GameDB> | null = null
+let usedCardIds: Set<string> = new Set()
 
 // Initialize the database
 const initDB = async (): Promise<IDBPDatabase<GameDB>> => {
@@ -126,8 +127,23 @@ export const getRandomCard = async (type?: CardType, intensity?: IntensityLevel)
     const cards = await getCards(type, intensity)
     if (cards.length === 0) return null
 
-    const randomIndex = Math.floor(Math.random() * cards.length)
-    return cards[randomIndex]
+    // Lọc ra các thẻ chưa được sử dụng
+    const availableCards = cards.filter(card => !usedCardIds.has(card._id))
+
+    // Nếu tất cả thẻ đã được sử dụng, reset lại danh sách
+    if (availableCards.length === 0) {
+      usedCardIds.clear()
+      return getRandomCard(type, intensity)
+    }
+
+    // Chọn ngẫu nhiên từ các thẻ còn lại
+    const randomIndex = Math.floor(Math.random() * availableCards.length)
+    const selectedCard = availableCards[randomIndex]
+
+    // Đánh dấu thẻ đã được sử dụng
+    usedCardIds.add(selectedCard._id)
+
+    return selectedCard
   } catch (error) {
     console.error("Error getting random card:", error)
     return null
@@ -307,4 +323,8 @@ export const initializeDatabase = async (): Promise<void> => {
   } catch (error) {
     console.error("Error initializing database:", error)
   }
+}
+
+export const resetCardHistory = (): void => {
+  usedCardIds.clear()
 }

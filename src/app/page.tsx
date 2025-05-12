@@ -8,14 +8,17 @@ import PlayerList from "@/components/player-list"
 import { Button } from "@/components/ui/button"
 import { Sparkles, Info, Users, Play, History, PlusCircle } from "lucide-react"
 import { initializeDatabase, createGame } from "@/lib/db-service"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import type { IntensityLevel } from "@/lib/store"
 
 export default function Home() {
   const router = useRouter()
-  const { players, addPlayer, removePlayer, resetGame, setGameId, isDbInitialized, setIsDbInitialized } =
+  const { players, addPlayer, removePlayer, resetGame, setGameId, isDbInitialized, setIsDbInitialized, setGameMode } =
     useGameStore()
   const [isLoading, setIsLoading] = useState(false)
   const [isInitializing, setIsInitializing] = useState(true)
   const [showGuide, setShowGuide] = useState(true)
+  const [selectedMode, setSelectedMode] = useState<IntensityLevel | "random">("random")
 
   useEffect(() => {
     // Reset game when landing on home page
@@ -47,6 +50,9 @@ export default function Home() {
     setIsLoading(true)
 
     try {
+      // Set game mode before creating game
+      setGameMode(selectedMode)
+      
       // Create a new game in IndexedDB
       const gameId = await createGame(players)
       setGameId(gameId)
@@ -184,22 +190,42 @@ export default function Home() {
               minPlayers={2}
             />
 
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-6">
-              <Button
-                onClick={handleStartGame}
-                disabled={players.length < 2 || isLoading}
-                className="w-full bg-amber-300 hover:bg-amber-400 text-gray-800 font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
-              >
-                {isLoading ? (
-                  "Đang tải..."
-                ) : (
-                  <>
-                    <Sparkles className="h-5 w-5 mr-2" />
-                    Bắt Đầu Chơi
-                  </>
-                )}
-              </Button>
-            </motion.div>
+            <div className="mt-6 space-y-4">
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="font-semibold text-lg mb-2 text-amber-600">Chọn Chế Độ Chơi</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Chọn mức độ thử thách phù hợp với nhóm của bạn
+                </p>
+                <Select value={selectedMode} onValueChange={(value) => setSelectedMode(value as IntensityLevel | "random")}>
+                  <SelectTrigger className="w-full bg-white border-gray-200 focus:border-amber-300 focus:ring-amber-300">
+                    <SelectValue placeholder="Chọn chế độ chơi" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="random">🎲 Ngẫu Nhiên - Tất cả mức độ</SelectItem>
+                    <SelectItem value="light">😊 Nhẹ Nhàng - Thử thách đơn giản</SelectItem>
+                    <SelectItem value="medium">😏 Vừa Phải - Thử thách trung bình</SelectItem>
+                    <SelectItem value="heavy">🔥 Nặng Đô - Thử thách khó</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+                <Button
+                  onClick={handleStartGame}
+                  disabled={players.length < 2 || isLoading}
+                  className="w-full bg-amber-300 hover:bg-amber-400 text-gray-800 font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+                >
+                  {isLoading ? (
+                    "Đang tải..."
+                  ) : (
+                    <>
+                      <Sparkles className="h-5 w-5 mr-2" />
+                      Bắt Đầu Chơi
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            </div>
           </>
         )}
       </motion.div>

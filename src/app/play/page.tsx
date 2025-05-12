@@ -23,6 +23,7 @@ export default function PlayPage() {
     addToHistory,
     setIsCardFlipped,
     resetGame,
+    gameMode,
   } = useGameStore()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +42,7 @@ export default function PlayPage() {
     setIsLoading(true)
 
     try {
-      const card = await getRandomCard()
+      const card = await getRandomCard(undefined, gameMode === "random" ? undefined : gameMode)
 
       if (!card) {
         throw new Error("No cards found")

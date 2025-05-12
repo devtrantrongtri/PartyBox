@@ -24,7 +24,7 @@ export type GameHistory = {
   timestamp: Date
 }
 
-type GameStore = {
+interface GameState {
   players: Player[]
   currentPlayerIndex: number
   gameHistory: GameHistory[]
@@ -32,66 +32,85 @@ type GameStore = {
   isCardFlipped: boolean
   gameId: string | null
   isDbInitialized: boolean
-
-  // Actions
-  addPlayer: (player: Player) => void
-  removePlayer: (index: number) => void
-  updatePlayer: (index: number, player: Player) => void
-  setPlayers: (players: Player[]) => void
-  nextPlayer: () => void
-  setCurrentCard: (card: Card | null) => void
-  addToHistory: (history: GameHistory) => void
-  resetGame: () => void
-  setGameId: (id: string) => void
-  setIsCardFlipped: (flipped: boolean) => void
-  setIsDbInitialized: (initialized: boolean) => void
+  gameMode: IntensityLevel | "random"
 }
 
-export const useGameStore = create<GameStore>()(
-  persist(
-    (set) => ({
+interface GameStore extends GameState {
+  addPlayer: (name: string) => void
+  removePlayer: (index: number) => void
+  nextPlayer: () => void
+  setCurrentCard: (card: Card | null) => void
+  setIsCardFlipped: (isFlipped: boolean) => void
+  addToHistory: (historyItem: GameHistory) => void
+  resetGame: () => void
+  setGameId: (id: string | null) => void
+  setIsDbInitialized: (initialized: boolean) => void
+  setGameMode: (mode: IntensityLevel | "random") => void
+}
+
+export const useGameStore = create<GameStore>((set) => ({
+  players: [],
+  currentPlayerIndex: 0,
+  gameHistory: [],
+  currentCard: null,
+  isCardFlipped: false,
+  gameId: null,
+  isDbInitialized: false,
+  gameMode: "random",
+
+  addPlayer: (name) =>
+    set((state) => ({
+      players: [...state.players, { name, id: crypto.randomUUID() }],
+    })),
+
+  removePlayer: (index) =>
+    set((state) => ({
+      players: state.players.filter((_, i) => i !== index),
+    })),
+
+  nextPlayer: () =>
+    set((state) => ({
+      currentPlayerIndex: (state.currentPlayerIndex + 1) % state.players.length,
+    })),
+
+  setCurrentCard: (card) =>
+    set({
+      currentCard: card,
+    }),
+
+  setIsCardFlipped: (isFlipped) =>
+    set({
+      isCardFlipped: isFlipped,
+    }),
+
+  addToHistory: (historyItem) =>
+    set((state) => ({
+      gameHistory: [historyItem, ...state.gameHistory],
+    })),
+
+  resetGame: () =>
+    set({
       players: [],
       currentPlayerIndex: 0,
       gameHistory: [],
       currentCard: null,
       isCardFlipped: false,
       gameId: null,
-      isDbInitialized: false,
-
-      addPlayer: (player) => set((state) => ({ players: [...state.players, player] })),
-      removePlayer: (index) =>
-        set((state) => ({
-          players: state.players.filter((_, i) => i !== index),
-        })),
-      updatePlayer: (index, player) =>
-        set((state) => ({
-          players: state.players.map((p, i) => (i === index ? player : p)),
-        })),
-      setPlayers: (players) => set({ players }),
-      nextPlayer: () =>
-        set((state) => ({
-          currentPlayerIndex: (state.currentPlayerIndex + 1) % state.players.length,
-          isCardFlipped: false,
-          currentCard: null,
-        })),
-      setCurrentCard: (card) => set({ currentCard: card }),
-      addToHistory: (history) =>
-        set((state) => ({
-          gameHistory: [history, ...state.gameHistory],
-        })),
-      resetGame: () =>
-        set({
-          currentPlayerIndex: 0,
-          gameHistory: [],
-          currentCard: null,
-          isCardFlipped: false,
-        }),
-      setGameId: (id) => set({ gameId: id }),
-      setIsCardFlipped: (flipped) => set({ isCardFlipped: flipped }),
-      setIsDbInitialized: (initialized) => set({ isDbInitialized: initialized }),
+      gameMode: "random",
     }),
-    {
-      name: "drinking-game-storage",
-    },
-  ),
-)
+
+  setGameId: (id) =>
+    set({
+      gameId: id,
+    }),
+
+  setIsDbInitialized: (initialized) =>
+    set({
+      isDbInitialized: initialized,
+    }),
+
+  setGameMode: (mode) =>
+    set({
+      gameMode: mode,
+    }),
+}))

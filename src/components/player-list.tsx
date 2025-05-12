@@ -10,7 +10,7 @@ import { X, UserPlus, User } from "lucide-react"
 
 type PlayerListProps = {
   players: Player[]
-  onAddPlayer: (player: Player) => void
+  onAddPlayer: (name: string) => void
   onRemovePlayer: (index: number) => void
   onClearPlayers: () => void
   minPlayers?: number
@@ -27,7 +27,7 @@ export default function PlayerList({
 
   const handleAddPlayer = () => {
     if (newPlayerName.trim()) {
-      onAddPlayer({ name: newPlayerName.trim() })
+      onAddPlayer(newPlayerName.trim())
       setNewPlayerName("")
     }
   }

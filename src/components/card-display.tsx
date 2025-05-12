@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import Image from "next/image"
 import type { Card } from "@/lib/store"
 import { Badge } from "@/components/ui/badge"
 import { Heart, HelpCircle, Zap, Beer } from "lucide-react"
@@ -81,7 +82,13 @@ export default function CardDisplay({ card, isFlipped, onFlip, isLoading = false
             animate={{ rotate: [0, -5, 5, -5, 0] }}
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
           >
-            <img src="/placeholder.svg?height=100&width=100" alt="Card Back" className="w-24 h-24 mb-4" />
+            <Image 
+              src="/placeholder.svg?height=100&width=100" 
+              alt="Card Back" 
+              width={100}
+              height={100}
+              className="w-24 h-24 mb-4"
+            />
           </motion.div>
           <h3 className="text-2xl font-bold text-center mb-2 text-foreground">Rút Thẻ Định Mệnh</h3>
           <p className="text-center text-gray-600">{isLoading ? "Đang tải..." : "Nhấn để rút thẻ"}</p>

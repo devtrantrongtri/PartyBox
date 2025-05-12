@@ -12,7 +12,6 @@ type PlayerListProps = {
   players: Player[]
   onAddPlayer: (player: Player) => void
   onRemovePlayer: (index: number) => void
-  onUpdatePlayer: (index: number, player: Player) => void
   minPlayers?: number
 }
 
@@ -20,7 +19,6 @@ export default function PlayerList({
   players,
   onAddPlayer,
   onRemovePlayer,
-  onUpdatePlayer,
   minPlayers = 2,
 }: PlayerListProps) {
   const [newPlayerName, setNewPlayerName] = useState("")
